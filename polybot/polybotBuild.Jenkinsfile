@@ -6,7 +6,7 @@ pipeline {
             steps {
                 sh '''
 
-                docker build -t polybot .
+                docker build -t polybot polybot/
                 '''
             }
         }
