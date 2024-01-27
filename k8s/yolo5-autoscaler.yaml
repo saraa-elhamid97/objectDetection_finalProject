@@ -1,0 +1,14 @@
+# k8s/hpa-autoscaler-demo.yaml
+
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: yolo5-autoscaler
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: yolo5
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 60
