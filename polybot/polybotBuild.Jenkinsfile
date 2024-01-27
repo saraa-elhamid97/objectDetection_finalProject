@@ -4,8 +4,10 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh 'ls'
-                sh 'echo building...'
+                sh '''
+
+                docker build -t polybot .
+                '''
             }
         }
     }
