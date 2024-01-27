@@ -16,16 +16,12 @@ spec:
     spec:
       containers:
       - name: polybot
-        image: 933060838752.dkr.ecr.us-east-2.amazonaws.com/saraa-polybot:1.1.0
-        volumeMounts:
-          - name: tls-certificate
-            mountPath: /tls-certificate
-            readOnly: true
+        image: 933060838752.dkr.ecr.us-east-2.amazonaws.com/saraa-polybot:1.1.1
         env:
           - name: BUCKET_NAME
             value: "saraa-bucket"
           - name: TELEGRAM_APP_URL
-            value: "saraa.atech-bot.click"
+            value: "https://saraa.atech-bot.click"
           - name: SQS_QUEUE_NAME
             value: "saraa-predictionReq-queue"
         resources:
@@ -45,10 +41,6 @@ spec:
           httpGet:
             path: "/"
             port: 8443
-      volumes:
-        - name: tls-certificate
-          secret:
-            secretName: saraa-tls
 
 ---
 apiVersion: v1

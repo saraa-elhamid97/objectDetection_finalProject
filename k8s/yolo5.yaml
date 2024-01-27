@@ -20,7 +20,7 @@ spec:
           - name: BUCKET_NAME
             value: "saraa-bucket"
           - name: TELEGRAM_APP_URL
-            value: "saraa.atech-bot.click"
+            value: "https://saraa.atech-bot.click"
           - name: SQS_QUEUE_NAME
             value: "saraa-predictionReq-queue"
         resources:
