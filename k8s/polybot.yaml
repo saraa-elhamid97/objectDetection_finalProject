@@ -51,6 +51,6 @@ spec:
   selector:
     app: polybot
   ports:
-  - name: https
+  - protocol: TCP
     port: 8443
     targetPort: 8443

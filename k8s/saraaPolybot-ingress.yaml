@@ -17,7 +17,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: polybot
+            name: polybot-service
             port:
               number: 8443
   ingressClassName: nginx
