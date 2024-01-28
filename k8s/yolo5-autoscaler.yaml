@@ -8,5 +8,5 @@ spec:
     kind: Deployment
     name: yolo5
   minReplicas: 1
-  maxReplicas: 7
+  maxReplicas: 5
   targetCPUUtilizationPercentage: 30
