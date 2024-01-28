@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: polybot
-        image: 933060838752.dkr.ecr.us-east-2.amazonaws.com/saraa-polybot:1.1.1
+        image: 933060838752.dkr.ecr.us-east-2.amazonaws.com/saraa-polybot:6
         env:
           - name: BUCKET_NAME
             value: "saraa-bucket"

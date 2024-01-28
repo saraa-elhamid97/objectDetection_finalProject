@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: yolo5
-        image: 933060838752.dkr.ecr.us-east-2.amazonaws.com/saraa-yolo5:1
+        image: 933060838752.dkr.ecr.us-east-2.amazonaws.com/saraa-yolo5:2
         env:
           - name: BUCKET_NAME
             value: "saraa-bucket"
