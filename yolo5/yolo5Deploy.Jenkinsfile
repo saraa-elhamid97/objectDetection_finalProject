@@ -6,6 +6,7 @@ pipeline {
             steps{
                 sh '''
                     aws eks --region us-east-1 update-kubeconfig --name k8s-main
+                    kubectl config set-context --current --namespace=saraa
                 '''
             }
         }
