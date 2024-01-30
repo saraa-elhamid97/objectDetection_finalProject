@@ -4,7 +4,7 @@ pipeline {
     stages {
          stage('kubeconfig '){
             steps{
-                ssh '''
+                sh '''
                     aws eks --region us-east-1 update-kubeconfig --name k8s-main
                 '''
             }
