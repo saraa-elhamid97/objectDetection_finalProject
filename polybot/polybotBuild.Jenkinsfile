@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         NEXUS_CREDENTIALS_ID = 'nexus'
-        NEXUS_URL = 'http://localhost:8083/'
+        NEXUS_URL = 'localhost:8083/'
         NEXUS_VERSION = 'nexus3'
         PROTOCOL = 'http'
         REPOSITORY = 'imagePrediction'
