@@ -15,8 +15,8 @@ pipeline {
         stage('Build') {
             steps {
                 sh '''
-                    docker build -t ${IMAGE_NAME}:$BUILD_NUMBER polybot/
-                    docker tag ${IMAGE_NAME}:$BUILD_NUMBER ${NEXUS_URL}${REPOSITORY}/${IMAGE_NAME}:${BUILD_NUMBER}
+                    docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} polybot/
+                    docker tag ${IMAGE_NAME}:${BUILD_NUMBER} ${NEXUS_URL}${REPOSITORY}/${IMAGE_NAME}:${BUILD_NUMBER}
                 '''
             }
         }
@@ -24,7 +24,7 @@ pipeline {
         stage('Upload to Nexus') {
             steps {
                 sh '''
-                    docker login -u "${NEXUS_USERNAME}" -p "${NEXUS_PASSWORD}" ${NEXUS_URL}
+                    docker login -u "${NEXUS_USERNAME}" -p "${NEXUS_PASSWORD}" localhost:8083
                     docker push ${NEXUS_URL}${REPOSITORY}/${IMAGE_NAME}:${BUILD_NUMBER}
                 '''
             }
