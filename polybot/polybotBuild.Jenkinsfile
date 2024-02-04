@@ -6,7 +6,7 @@ pipeline {
         NEXUS_URL = 'localhost:8083/'
         NEXUS_VERSION = 'nexus3'
         PROTOCOL = 'http'
-        REPOSITORY = 'imagePrediction'
+        REPOSITORY = 'imageprediction'
         VERSION = 'v1.0'
         IMAGE_NAME = 'saraa-polybot'
     }
