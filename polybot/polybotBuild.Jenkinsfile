@@ -25,12 +25,10 @@ pipeline {
 
         stage('Upload to Nexus') {
             steps {
-                script {
-                    sh '''
-                        docker login -u "${NEXUS_USERNAME}" -p "${NEXUS_PASSWORD}" ${NEXUS_URL}
-                        docker push ${NEXUS_URL}/${REPOSITORY}/${IMAGE_NAME}:${BUILD_NUMBER}
-                    '''
-                }
+                sh '''
+                    echo "${NEXUS_PASSWORD}" | docker login -u "${NEXUS_USERNAME}" --password-stdin localhost:8083
+                    docker push localhost:8083/${REPOSITORY}/${IMAGE_NAME}:${BUILD_NUMBER}
+                '''
             }
         }
 
