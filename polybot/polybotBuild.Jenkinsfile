@@ -2,11 +2,10 @@ pipeline {
     agent any
 
     environment {
-        NEXUS_URL = 'http://localhost:8083/repository/imagePrediction/'
+        NEXUS_URL = 'http://localhost:8083/#browse/browse:imagePrediction'
         IMAGE_NAME = 'saraa-polybot'
-        NEXUS_CREDENTIALS_ID = 'nexus' // Replace with the actual credential ID
+        NEXUS_CREDENTIALS_ID = 'nexus'
     }
-
 
     stages {
         stage('Build') {
@@ -16,8 +15,7 @@ pipeline {
                         sh '''
                             docker build -t ${IMAGE_NAME}:$BUILD_NUMBER polybot/
                             docker login -u $NEXUS_USERNAME -p $NEXUS_PASSWORD $NEXUS_URL
-                            docker tag ${IMAGE_NAME}:$BUILD_NUMBER ${NEXUS_URL}${IMAGE_NAME}:$BUILD_NUMBER
-                            docker push ${NEXUS_URL}${IMAGE_NAME}:$BUILD_NUMBER
+                            docker push ${IMAGE_NAME}:$BUILD_NUMBER
                         '''
                     }
                 }
