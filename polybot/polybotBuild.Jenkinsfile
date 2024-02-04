@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         NEXUS_CREDENTIALS_ID = 'nexus'
-        NEXUS_URL = 'localhost:8083/'
+        NEXUS_URL = 'localhost:8083'
         NEXUS_VERSION = 'nexus3'
         PROTOCOL = 'http'
         REPOSITORY = 'imageprediction'
@@ -14,19 +14,23 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh '''
-                    docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} polybot/
-                    docker tag ${IMAGE_NAME}:${BUILD_NUMBER} ${NEXUS_URL}${REPOSITORY}/${IMAGE_NAME}:${BUILD_NUMBER}
-                '''
+                script {
+                    sh '''
+                        docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} polybot/
+                        docker tag ${IMAGE_NAME}:${BUILD_NUMBER} ${NEXUS_URL}/${REPOSITORY}/${IMAGE_NAME}:${BUILD_NUMBER}
+                    '''
+                }
             }
         }
 
         stage('Upload to Nexus') {
             steps {
-                sh '''
-                    docker login -u "${NEXUS_USERNAME}" -p "${NEXUS_PASSWORD}" localhost:8083
-                    docker push ${NEXUS_URL}${REPOSITORY}/${IMAGE_NAME}:${BUILD_NUMBER}
-                '''
+                script {
+                    sh '''
+                        docker login -u "${NEXUS_USERNAME}" -p "${NEXUS_PASSWORD}" ${NEXUS_URL}
+                        docker push ${NEXUS_URL}/${REPOSITORY}/${IMAGE_NAME}:${BUILD_NUMBER}
+                    '''
+                }
             }
         }
 
@@ -34,7 +38,7 @@ pipeline {
             steps {
                 script {
                     build job: 'PolybotDeploy', wait: false, parameters: [
-                        string(name: 'POLYBOT_IMAGE_URL', value: "${NEXUS_URL}${REPOSITORY}/${IMAGE_NAME}:${BUILD_NUMBER}")
+                        string(name: 'POLYBOT_IMAGE_URL', value: "${NEXUS_URL}/${REPOSITORY}/${IMAGE_NAME}:${BUILD_NUMBER}")
                     ]
                 }
             }
