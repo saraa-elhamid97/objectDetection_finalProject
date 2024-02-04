@@ -4,7 +4,7 @@ pipeline {
     environment {
         NEXUS_URL = 'http://localhost:8083/repository/imagePrediction/'
         IMAGE_NAME = 'saraa-polybot'
-        NEXUS_CREDENTIALS_ID = 'nexus'
+        NEXUS_CREDENTIALS_ID = 'nexus' // Replace with the actual credential ID
     }
 
 
@@ -14,8 +14,9 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId: "${NEXUS_CREDENTIALS_ID}", usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
                         sh '''
-                            docker build -t ${NEXUS_URL}${IMAGE_NAME}:$BUILD_NUMBER polybot/
+                            docker build -t ${IMAGE_NAME}:$BUILD_NUMBER polybot/
                             docker login -u $NEXUS_USERNAME -p $NEXUS_PASSWORD $NEXUS_URL
+                            docker tag ${IMAGE_NAME}:$BUILD_NUMBER ${NEXUS_URL}${IMAGE_NAME}:$BUILD_NUMBER
                             docker push ${NEXUS_URL}${IMAGE_NAME}:$BUILD_NUMBER
                         '''
                     }
