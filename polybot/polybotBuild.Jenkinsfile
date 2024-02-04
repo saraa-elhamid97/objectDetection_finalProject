@@ -25,7 +25,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        echo "${NEXUS_PASSWORD}" | docker login -u "${NEXUS_USERNAME}" --password-stdin ${NEXUS_URL}
+                        echo "${NEXUS_PASSWORD}" | docker login --username "${NEXUS_USERNAME}" --password-stdin ${NEXUS_URL}
                         docker push ${NEXUS_URL}/${REPOSITORY}/${IMAGE_NAME}:${BUILD_NUMBER}
                     '''
                 }
