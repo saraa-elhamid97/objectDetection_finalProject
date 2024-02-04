@@ -14,21 +14,21 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                script {
                     sh '''
                         docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} polybot/
                         docker tag ${IMAGE_NAME}:${BUILD_NUMBER} ${NEXUS_URL}/${REPOSITORY}/${IMAGE_NAME}:${BUILD_NUMBER}
                     '''
-                }
             }
         }
 
         stage('Upload to Nexus') {
             steps {
-                sh '''
-                    echo "${NEXUS_PASSWORD}" | docker login -u "${NEXUS_USERNAME}" --password-stdin localhost:8083
-                    docker push localhost:8083/${REPOSITORY}/${IMAGE_NAME}:${BUILD_NUMBER}
-                '''
+                script {
+                    sh '''
+                        echo "${NEXUS_PASSWORD}" | docker login -u "${NEXUS_USERNAME}" --password-stdin ${NEXUS_URL}
+                        docker push ${NEXUS_URL}/${REPOSITORY}/${IMAGE_NAME}:${BUILD_NUMBER}
+                    '''
+                }
             }
         }
 
