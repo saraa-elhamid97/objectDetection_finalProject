@@ -1,45 +1,28 @@
 pipeline {
     agent any
-
-    environment {
-        NEXUS_CREDENTIALS_ID = 'nexus'
-        NEXUS_URL = 'localhost:8083'
-        NEXUS_VERSION = 'nexus3'
-        PROTOCOL = 'http'
-        REPOSITORY = 'imageprediction'
-        VERSION = 'v1.0'
-        IMAGE_NAME = 'saraa-polybot'
+    environment{
+       ECR_URL = '933060838752.dkr.ecr.us-east-2.amazonaws.com'
+       IMAGE_NAME = 'saraa-polybot'
     }
 
     stages {
         stage('Build') {
             steps {
-                    sh '''
-                        docker build -t ${IMAGE_NAME}:${BUILD_NUMBER} polybot/
-                        docker tag ${IMAGE_NAME}:${BUILD_NUMBER} ${NEXUS_URL}/${REPOSITORY}/${IMAGE_NAME}:${BUILD_NUMBER}
-                    '''
+                sh '''
+                aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin $ECR_URL
+                docker build -t polybot:$BUILD_NUMBER polybot/
+                docker tag polybot:$BUILD_NUMBER $ECR_URL/$IMAGE_NAME:$BUILD_NUMBER
+                docker push $ECR_URL/$IMAGE_NAME:$BUILD_NUMBER
+                '''
             }
         }
-
-        stage('Upload to Nexus') {
-            steps {
-                script {
-                    sh '''
-                        echo "${NEXUS_PASSWORD}" | docker login --username "${NEXUS_USERNAME}" --password-stdin ${NEXUS_URL}
-                        docker push ${NEXUS_URL}/${REPOSITORY}/${IMAGE_NAME}:${BUILD_NUMBER}
-                    '''
-                }
-            }
-        }
-
         stage('Trigger Deploy') {
             steps {
-                script {
-                    build job: 'PolybotDeploy', wait: false, parameters: [
-                        string(name: 'POLYBOT_IMAGE_URL', value: "${NEXUS_URL}/${REPOSITORY}/${IMAGE_NAME}:${BUILD_NUMBER}")
-                    ]
-                }
-            }
-        }
+                build job: 'PolybotDeploy', wait: false, parameters: [
+                    string(name: 'POLYBOT_IMAGE_URL', value: "$ECR_URL/$IMAGE_NAME:$BUILD_NUMBER")
+        ]
+    }
+}
+
     }
 }
